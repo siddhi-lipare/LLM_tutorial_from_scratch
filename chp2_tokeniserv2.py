@@ -37,7 +37,7 @@ class SimpleTokeniserV2:
 
 tokenizer = SimpleTokeniserV2(vocab)
 # text = """It's the last he painted, you know," Mrs. Gisburn said with pardonable pride."""
-text = "Hello, do you like tea?" # Hello isn't present in vocabulary, thus gives KeyError
+text = "Hello, do you like tea?" # Hello isn't present in vocabulary, thus will be printed as special token <|unk|>
 
 ids = tokenizer.encode(text)
 print(ids)
