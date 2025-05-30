@@ -3,7 +3,7 @@ import re
 class SimpleTokeniser:
     def __init__(self, vocab):
         self.str_to_int = vocab
-        self.int_to_str = {i:s for i,s in vocab.items()}
+        self.int_to_str = {i:s for s,i in vocab.items()}
 
     def encode(self, text):
         preprocessed = re.split(r'([,.?_!"()\']|--|\s)', text)
@@ -12,7 +12,7 @@ class SimpleTokeniser:
         return ids
     
     def decode(self, ids):
-        text = " ".join([self.int_to_str[s] for s in ids])
+        text = " ".join([self.int_to_str[i] for i in ids])
         text = re.sub(r'\s+([,.?!"()\'])', r'\1', text)
         return text
 
@@ -27,7 +27,10 @@ all_words = sorted(set(preprocessed))
 vocab = {token:integer for integer, token in enumerate(all_words)}
 
 tokenizer = SimpleTokeniser(vocab)
-text = """It's the last he painted, you know," Mrs. Gisburn said with pardonable pride. "The last but one," she corrected herself--"but the other doesn't count, because he destroyed it."""
+text = """It's the last he painted, you know," Mrs. Gisburn said with pardonable pride."""
+# text = "Hello, do you like tea?" # Hello isn't present in vocabulary, thus gives KeyError
 
 ids = tokenizer.encode(text)
 print(ids)
+
+print(tokenizer.decode(ids))
