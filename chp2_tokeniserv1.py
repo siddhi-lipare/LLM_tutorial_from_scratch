@@ -1,6 +1,6 @@
 import re
 
-class SimpleTokeniser:
+class SimpleTokeniserV1:
     def __init__(self, vocab):
         self.str_to_int = vocab
         self.int_to_str = {i:s for s,i in vocab.items()}
@@ -26,7 +26,7 @@ all_words = sorted(set(preprocessed))
 
 vocab = {token:integer for integer, token in enumerate(all_words)}
 
-tokenizer = SimpleTokeniser(vocab)
+tokenizer = SimpleTokeniserV1(vocab)
 text = """It's the last he painted, you know," Mrs. Gisburn said with pardonable pride."""
 # text = "Hello, do you like tea?" # Hello isn't present in vocabulary, thus gives KeyError
 
@@ -34,3 +34,11 @@ ids = tokenizer.encode(text)
 print(ids)
 
 print(tokenizer.decode(ids))
+
+all_tokens = sorted(list(set(preprocessed)))
+all_tokens.extend(["<|endoftext|>", "<|unk|>"])
+vocab= {token:integer for integer,token in enumerate(all_tokens)}
+print(len(vocab.items()))
+
+for i, item in enumerate(list(vocab.items())[-5:]):
+    print(item)
