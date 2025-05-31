@@ -40,10 +40,23 @@ def create_dataloader_v1(txt, batch_size=4, max_length=256, stride=128, shuffle=
 with open("the-verdict.txt", "r", encoding="utf-8") as f:
     raw_text = f.read()
 
-dataloader = create_dataloader_v1(raw_text, batch_size=4, max_length=4, stride=4, shuffle=False) # max_length is generally atleast 256  while training LLMs 
-#although smaller batch sizes take less memory, theey lead to more noisy model updates.
+# dataloader = create_dataloader_v1(raw_text, batch_size=4, max_length=4, stride=4, shuffle=False) # max_length is generally atleast 256  while training LLMs 
+# #although smaller batch sizes take less memory, theey lead to more noisy model updates.
+
+# data_iter = iter(dataloader)
+# first_batch = next(data_iter)
+
+# print(first_batch)
+
+vocab_size = 50257
+output_dim = 256
+token_embedding_layer = torch.nn.Embedding(vocab_size, output_dim)
+
+max_length=4
+dataloader = create_dataloader_v1(raw_text, batch_size=8, max_length=max_length, stride=max_length, shuffle=True)
 
 data_iter = iter(dataloader)
-first_batch = next(data_iter)
+inputs, targets = next(data_iter)
 
-print(first_batch)
+print("Token IDs: \n", inputs)
+print(inputs.shape)
