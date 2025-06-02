@@ -41,3 +41,22 @@ for i, x_i in enumerate(inputs):
     contex_vec_2 += attn_scores_2_softmax[i]*x_i 
 
 print(contex_vec_2)
+
+attn_scores = torch.empty(6,6)
+# # using nested for loop
+# for i, x_i in enumerate(inputs):
+#     for j, x_j in enumerate(inputs):
+#         attn_scores[i][j] = torch.dot(x_i, x_j)
+
+# print(attn_scores)
+
+# using matrix mult
+attn_scores = inputs @ inputs.T
+print(attn_scores)
+
+attn_weights_softmax = torch.softmax(attn_scores, dim=-1)
+print(attn_weights_softmax)
+print("Sum", attn_weights_softmax.sum(dim=-1))
+
+all_context_vectors = attn_weights_softmax @ inputs
+print(all_context_vectors)

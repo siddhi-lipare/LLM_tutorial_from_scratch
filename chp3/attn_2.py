@@ -8,22 +8,40 @@ inputs = torch.tensor(
      [0.05, 0.80, 0.55]] # step     (x^6)
 )
 
-query = inputs[1]
-attn_scores = torch.empty(6,6)
-# # using nested for loop
-# for i, x_i in enumerate(inputs):
-#     for j, x_j in enumerate(inputs):
-#         attn_scores[i][j] = torch.dot(x_i, x_j)
+x_2 = inputs[1]
+d_in = inputs.shape[1]
+d_out = 2
 
-# print(attn_scores)
+torch.manual_seed(123)
 
-# using matrix mult
-attn_scores = inputs @ inputs.T
-print(attn_scores)
+'''
+weight parameters are the fundamental, learned coefficiants that 
+define the network's connections, while attention weights are dynamic, 
+content-specific values.
+'''
+# Initialising weight parameters for query, key and value vector
+W_query = torch.nn.Parameter(torch.rand(d_in, d_out), requires_grad= False)
+W_key = torch.nn.Parameter(torch.rand(d_in, d_out), requires_grad= False)
+W_value = torch.nn.Parameter(torch.rand(d_in, d_out), requires_grad= False)
 
-attn_scores_softmax = torch.softmax(attn_scores, dim=-1)
-print(attn_scores_softmax)
-print("Sum", attn_scores_softmax.sum(dim=-1))
+query_2 = x_2 @ W_query
+key_2 = x_2 @ W_key
+value_2 = x_2 @ W_value
+print(query_2)
 
-all_context_vectors = attn_scores_softmax @ inputs
-print(all_context_vectors)
+keys = inputs @ W_key
+values = inputs @ W_value
+
+print(keys.shape)
+print(values.shape)
+
+key_2 = keys[1]
+attn_score_2 = query_2 @ keys.T
+print(attn_score_2)
+
+d_k = keys.shape[-1]
+attn_weights_2 = torch.softmax(attn_score_2 / d_k ** 0.5, dim = -1)
+print(attn_weights_2)
+
+context_vec_2 = attn_weights_2 @ values
+print(context_vec_2)
