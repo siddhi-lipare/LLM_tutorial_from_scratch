@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from attn_class_v2 import SelfAttentionV2, selfattn_v2
 
 class SelfAttentionV1(nn.Module):
     def __init__(self, d_in, d_out):
@@ -34,4 +35,10 @@ d_in = inputs.shape[1]
 d_out = 2
 
 sa_V1 = SelfAttentionV1(d_in, d_out)
+# print(sa_V1(inputs))
+
+# Exercise 3.1
+sa_V1.W_key = nn.Parameter(selfattn_v2.W_key.weight.T)
+sa_V1.W_value = nn.Parameter(selfattn_v2.W_value.weight.T)
+sa_V1.W_query = nn.Parameter(selfattn_v2.W_query.weight.T)
 print(sa_V1(inputs))
