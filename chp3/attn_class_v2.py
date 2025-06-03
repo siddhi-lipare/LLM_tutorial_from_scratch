@@ -34,28 +34,4 @@ d_in = inputs.shape[1]
 d_out = 2
 
 selfattn_v2 = SelfAttentionV2(d_in, d_out)
-# print(selfattn_v2(inputs))
-
-queries = selfattn_v2.W_query(inputs)
-keys = selfattn_v2.W_key(inputs)
-
-attn_scores = queries @ keys.T
-attn_weights = torch.softmax(attn_scores / keys.shape[-1]**0.5, dim=-1)
-
-print(attn_weights)
-
-context_length = attn_weights.shape[0]
-mask = torch.tril(torch.ones(context_length, context_length))
-print(mask)
-masked_attn_weights = attn_weights*mask
-print(masked_attn_weights)
-
-# Using simple normalisation over causally masked attention weight matrix
-row_sums = masked_attn_weights.sum(dim=-1, keepdim=True)
-print(row_sums)
-
-renorm_attn_weights = masked_attn_weights/row_sums
-print(renorm_attn_weights)
-
-# row_sum_renorm = renorm_attn_weights.sum(dim=-1)
-# print(row_sum_renorm)
+print(selfattn_v2(inputs))
