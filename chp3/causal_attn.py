@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-class CausalAttentionV1(nn.Module):
+class CausalAttention(nn.Module):
     def __init__(self, d_in, d_out, context_length, dropout, qkv_bias = False):
         super().__init__()
         self.d_out = d_out
@@ -42,7 +42,7 @@ context_length = batch.shape[1]
 d_in = batch.shape[2]
 d_out = 2
 
-ca = CausalAttentionV1(d_in, d_out, context_length, 0.0)
+ca = CausalAttention(d_in, d_out, context_length, 0.0)
 context_vecs = ca(batch)
 print(context_vecs.shape)
 
