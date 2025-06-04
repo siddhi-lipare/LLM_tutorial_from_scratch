@@ -25,7 +25,8 @@ inputs = torch.tensor(
 batch = torch.stack((inputs, inputs), dim=0)
 context_length = batch.shape[1]
 d_in = 3
-d_out = 2
+# d_out = 2
+d_out = 1 # Exercise 3.2
 
 num_heads = 2
 
