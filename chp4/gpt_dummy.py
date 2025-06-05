@@ -40,17 +40,7 @@ class ExampleDeepNeuralNetwork(nn.Module):
 
         return x
     
-    def print_gradients(model, x):
-        output = model(x)
-        target = torch.tensor([[0.]])
-
-        loss = nn.MSELoss()
-        loss = loss(output, target)
-        loss.backward()
-
-        for name, param in model.named_parameters():
-            if 'weight' in name:
-                print(f"{name} has gradient mean of {param.grad.abs().mean().item()}")
+    
 
 class DummyTransformerBlock(nn.Module):
     def __init__(self, cfg):
@@ -139,4 +129,32 @@ logits = model(batch)
 ffn = FeedForward(GPT_CONFIG_124M)
 x = torch.rand(2, 3, 768)
 out = ffn(x)
-print(out.shape)
+# print(out.shape)
+
+def print_gradients(model, x):
+        output = model(x)
+        target = torch.tensor([[0.]])
+
+        loss = nn.MSELoss()
+        loss = loss(output, target)
+        loss.backward()
+
+        for name, param in model.named_parameters():
+            if 'weight' in name:
+                print(f"{name} has gradient mean of {param.grad.abs().mean().item()}")
+
+
+layer_sizes = [3,3,3,3,3,1]
+sample_input = torch.tensor([1., 0., -1.])
+torch.manual_seed(123)
+model_without_shortcut = ExampleDeepNeuralNetwork(
+    layer_sizes, use_shortcut=False
+)
+
+# # vanishing gradient problem without using skip connections
+# print_gradients(model_without_shortcut, sample_input) 
+
+# Using skip connections to mitigate the vanishing graadients problem
+torch.manual_seed(123)
+model_with_shortcut = ExampleDeepNeuralNetwork(layer_sizes, use_shortcut=True)
+print_gradients(model_with_shortcut, sample_input)
