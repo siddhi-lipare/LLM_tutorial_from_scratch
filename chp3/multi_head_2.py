@@ -54,14 +54,14 @@ a = torch.tensor([[[[0.2745, 0.6584, 0.2775, 0.8573],
                     [0.4066, 0.2318, 0.4545, 0.9737],
                     [0.4606, 0.5159, 0.4220, 0.5786]]]])
 
-print(a @ a.transpose(2,3))
+# print(a @ a.transpose(2,3))
 first_head = a[0, 0, :, :]
 first_res = first_head @ first_head.T
-print("First head:\n", first_res)     
+# print("First head:\n", first_res)     
 
 second_head = a[0, 1, :, :]
 second_res = second_head @ second_head.T
-print("Second head: \n", second_res)
+# print("Second head: \n", second_res)
 
 torch.manual_seed(123)
 inputs = torch.tensor(
@@ -74,16 +74,16 @@ inputs = torch.tensor(
 )
 
 batch = torch.stack((inputs, inputs), dim=0)
-print(batch.shape)
+# print(batch.shape)
 batch_size, context_length, d_in = batch.shape
 d_out = 2
-print(batch.shape)
+# print(batch.shape)
 
 mha = MultiHeadSelfAttention(d_in, d_out, context_length, dropout=0.0, num_heads=2)
 
 context_vecs = mha(batch)
-print(context_vecs)
-print(context_vecs.shape)
+# print(context_vecs)
+# print(context_vecs.shape)
 
 
 # # Exercise 3.3  
